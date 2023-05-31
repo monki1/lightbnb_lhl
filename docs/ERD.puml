@@ -1,0 +1,57 @@
+@startuml
+
+!define Table(name, desc) class name as "desc" << (T,#FFAAAA) >>
+!define PrimaryKey(x) x << (PK,#FFFFAA) >>
+!define ForeignKey(x) x << (FK,#AAFFAA) >>
+
+Table(users, "Users") {
+  + id [PK]: integer
+  name: string
+  email: string
+  password: string
+}
+
+Table(properties, "Properties") {
+  + id [PK]: integer
+  owner_id [FK]: integer
+  title: string
+  description: text
+  thumbnail_photo_url: string
+  cover_photo_url: string
+  cost_per_night: integer
+  parking_spaces: integer
+  number_of_bathrooms: integer
+  number_of_bedrooms: integer
+  country: string
+  street: string
+  city: string
+  province: string
+  post_code: string
+  active: boolean
+}
+
+Table(reservations, "Reservations") {
+  + id [PK]: integer
+  start_date: date
+  end_date: date
+  property_id [FK]: integer
+  guest_id [FK]: integer
+}
+
+Table(property_reviews, "Property Reviews") {
+  + id [PK]: integer
+  guest_id [FK]: integer
+  property_id [FK]: integer
+  reservation_id [FK]: integer
+  rating: smallint
+  message: text
+}
+
+users --{ properties
+users --{ reservations
+properties --{ reservations
+users --{ property_reviews
+properties --{ property_reviews
+reservations --{ property_reviews
+
+@enduml
